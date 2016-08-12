@@ -1,0 +1,12 @@
+app:
+  build: "."
+  dockerfile: "dockerfile"
+  volumes:
+    - ".:/pressroom"
+  volumes_from:
+    - "box"
+
+box:
+  image: "busybox"
+  volumes:
+    - "/bundle"
