@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "github_api", "~> 0.14.0"
+  spec.add_dependency "github_api", "~> 0.12"
   spec.add_dependency "github_changelog_generator", "1.12.1"
   spec.add_dependency "rest-client", "~> 2.0"
 
