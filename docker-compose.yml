@@ -1,12 +1,17 @@
-app:
-  build: "."
-  dockerfile: "dockerfile"
-  volumes:
-    - ".:/pressroom"
-  volumes_from:
-    - "box"
-
-box:
-  image: "busybox"
-  volumes:
-    - "/bundle"
+version: "2"
+services:
+  base:
+    build: "."
+    image: "pressroom/base"
+  box:
+    image: "busybox"
+    volumes:
+      - "/root/bundle"
+  app:
+    image: "pressroom/base"
+    volumes:
+      - ".:/root/pressroom"
+    volumes_from:
+      - "box"
+    environment:
+      - "BUNDLE_PATH=/root/bundle"
