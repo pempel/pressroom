@@ -21,13 +21,13 @@ module Pressroom
     attr_reader :groups
     attr_accessor :diff_text, :diff_url, :empty_text
 
+    def self.create(sha:, tag: "")
+      CreateChangelog.call(sha: sha, tag: tag)
+    end
+
     def initialize
       @groups = []
       @empty_text = "Без существенных изменений."
-    end
-
-    def self.create(sha:, tag: "")
-      CreateChangelog.call(sha: sha, tag: tag)
     end
 
     def has_diff?

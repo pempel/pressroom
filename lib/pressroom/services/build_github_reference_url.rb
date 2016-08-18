@@ -7,8 +7,8 @@ module Pressroom
     end
 
     def call
-      user = Pressroom.configuration.github_user
-      repo = Pressroom.configuration.github_repo
+      user = Pressroom.configuration[:github_user_name]
+      repo = Pressroom.configuration[:github_repository_name]
       "https://github.com/#{user}/#{repo}/tree/#{ref}"
     end
 

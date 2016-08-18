@@ -7,7 +7,7 @@ module Pressroom
     end
 
     def call
-      github = Pressroom.configuration.github_api_client
+      github = Pressroom.configuration[:github_api_client]
       github.git_data.references.delete(ref: "tags/#{tag}")
       true
     end

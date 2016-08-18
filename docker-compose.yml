@@ -16,3 +16,5 @@ services:
       - "box"
     environment:
       - "BUNDLE_PATH=/root/bundle"
+    env_file:
+      - ".env"

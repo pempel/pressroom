@@ -11,9 +11,9 @@ module Pressroom
 
     def call
       options = GitHubChangelogGenerator::Parser.default_options
-      options[:user] = Pressroom.configuration.github_user
-      options[:project] = Pressroom.configuration.github_repo
-      options[:token] = Pressroom.configuration.github_token
+      options[:user] = Pressroom.configuration[:github_user_name]
+      options[:project] = Pressroom.configuration[:github_repository_name]
+      options[:token] = Pressroom.configuration[:github_token]
       options[:pulls] = false
       options[:verbose] = false
       options[:bug_prefix] = bug_prefix

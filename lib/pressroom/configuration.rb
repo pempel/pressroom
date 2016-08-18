@@ -1,58 +1,46 @@
 module Pressroom
   class Configuration
-    ENV_PARAMS = %w[APP_TITLE APP_URL APP_DOC_URL]
-
-    attr_accessor :slack_incoming_webhook_url
-    attr_accessor :slack_channel_name
-    attr_accessor :slack_user_name
-    attr_accessor :slack_icon_emoji
-
-    attr_accessor :github_user
-    attr_accessor :github_repo
-    attr_accessor :github_token
+    PARAMS = %w[
+      SLACK_USER_NAME
+      SLACK_ICON_EMOJI
+      SLACK_CHANNEL_NAME
+      SLACK_INCOMING_WEBHOOK_URL
+      GITHUB_REPOSITORY_NAME
+      GITHUB_USER_NAME
+      GITHUB_TOKEN
+      TITLE
+      LINKS
+    ]
 
     def initialize
-      @slack_incoming_webhook_url = ENV["PRESSROOM_SLACK_INCOMING_WEBHOOK_URL"]
-      @slack_channel_name = ENV["PRESSROOM_SLACK_CHANNEL_NAME"] || "#general"
-      @slack_user_name = ENV["PRESSROOM_SLACK_USER_NAME"] || "pressroom"
-      @slack_icon_emoji = ENV["PRESSROOM_SLACK_ICON_EMOJI"] || ":tada:"
-      @github_user = ENV["PRESSROOM_GITHUB_USER"]
-      @github_repo = ENV["PRESSROOM_GITHUB_REPO"]
-      @github_token = ENV["PRESSROOM_GITHUB_TOKEN"]
-      @environments = {}
+      @options = {}
+      @options[:default] = {}
       ENV.each_pair do |name, value|
-        ENV_PARAMS.each do |param|
-          match = name.match(/^PRESSROOM_ENV_(.*)_#{param}$/)
+        PARAMS.each do |param|
+          match = name.match(/^PRESSROOM_(.*)_#{param}$/)
           unless match.nil?
-            param_name = param.downcase.to_sym
-            env_name = match.captures.first.downcase.to_sym
-            @environments[env_name] ||= {}
-            @environments[env_name][param_name] = UnescapeString.call(value)
+            env = match.captures.first.to_s.downcase.to_sym
+            param = param.downcase.to_sym
+            value = UnescapeString.call(value)
+            value = value.scan(/(<[^>]+>)/).map(&:first) if param == :links
+            @options[env] ||= {}
+            @options[env][param] = value
           end
         end
       end
-    end
-
-    ENV_PARAMS.each do |param|
-      param_name = param.downcase.to_sym
-      define_method(param_name) do |env|
-        env_name = env.to_s.downcase.to_sym
-        @environments.fetch(env_name, {}).fetch(param_name, "")
+      @options[:github_api_client] = Github.new do |config|
+        config.user = @options[:github_user_name]
+        config.repo = @options[:github_repository_name]
+        config.oauth_token = @options[:github_token]
       end
     end
 
-    def github_api_client
-      @github_api_client ||= begin
-        Github.new do |config|
-          config.user = github_user
-          config.repo = github_repo
-          config.oauth_token = github_token
-        end
-      end
+    def [](param)
+      @options[param] || @options[:default][param]
     end
   end
 
   def self.configuration
-    @configuration ||= Configuration.new
+    @_configuration ||= Configuration.new
   end
 end
