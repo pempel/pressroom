@@ -9,6 +9,7 @@ services:
       - "/root/bundle"
   app:
     image: "pressroom/base"
+    command: "bin/setup"
     volumes:
       - ".:/root/pressroom"
     volumes_from:

@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.name        = "pressroom"
   spec.version     = Pressroom::VERSION
   spec.authors     = ["Eugene Pempel"]
-  spec.email       = ["pempel@cleverbits.co"]
+  spec.email       = ["eugene.pempel@gmail.com"]
   spec.summary     = "Release! Release! Release!"
   spec.description = "Release! Release! Release!"
 
