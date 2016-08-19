@@ -43,7 +43,7 @@ module Pressroom
           case
           when line.include?("[Full Changelog]")
             changelog.diff_text = line.scan(/\(.*compare\/(.*)\)/).first.first
-            changelog.diff_url = line.scan(/\((.*)\)/).first.first
+            changelog.diff_url = "../../compare/#{changelog.diff_text}"
           when line.include?(bug_prefix)
             changelog.add_group(id: bug_prefix, title: "Исправлены ошибки:")
             state = "bug_prefix"
