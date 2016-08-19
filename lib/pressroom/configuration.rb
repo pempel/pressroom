@@ -29,9 +29,9 @@ module Pressroom
         end
       end
       @options[:github_api_client] = Github.new do |config|
-        config.user = @options[:github_user_name]
-        config.repo = @options[:github_repository_name]
-        config.oauth_token = @options[:github_token]
+        config.user = @options[:default][:github_user_name]
+        config.repo = @options[:default][:github_repository_name]
+        config.oauth_token = @options[:default][:github_token]
       end
     end
 
