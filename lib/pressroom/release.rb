@@ -16,13 +16,8 @@ module Pressroom
     end
 
     def send_notification_to_slack
-      if tag.empty?
-        ref = ShortenGithubSha.call(sha: sha)
-        ref_url = BuildGithubReferenceUrl.call(ref: sha)
-      else
-        ref = tag
-        ref_url = BuildGithubReferenceUrl.call(ref: tag)
-      end
+      ref = tag.empty? ? sha : tag
+      ref_url = BuildGithubReferenceUrl.call(ref: ref)
       SendReleaseNotificationToSlack.call(
         env: env,
         ref: ref,
